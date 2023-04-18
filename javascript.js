@@ -86,7 +86,14 @@ function handleChoice(event) {
 }
 
 // Define updateTimer function
-
+function updateTimer() {
+    time--;
+    if (time < 0) {
+      time = 0;
+      endQuiz();
+    }
+    timeEl.textContent = time;
+}
 
 // Define endQuiz function
 
