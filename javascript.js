@@ -23,7 +23,23 @@ const questions = [
 ];
 
 // Set up variables and DOM elements
-
+const startBtn = document.getElementById("start-btn");
+const quizContainer = document.getElementById("quiz-container");
+const questionEl = document.getElementById("question");
+const choicesEl = document.getElementById("choices");
+const timeEl = document.getElementById("time");
+const endContainer = document.getElementById("end-container");
+const scoreEl = document.getElementById("score");
+const initialsInput = document.getElementById("initials");
+const submitBtn = document.getElementById("submit-btn");
+const highScoresContainer = document.getElementById("high-scores-container");
+const highScoresList = document.getElementById("high-scores-list");
+const backBtn = document.getElementById("back-btn");
+const clearBtn = document.getElementById("clear-btn");
+let currentQuestionIndex = 0;
+let time = 60;
+let score = 0;
+let timerInterval;
 
 // Add event listener to start button
 
