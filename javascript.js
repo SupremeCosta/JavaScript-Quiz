@@ -45,7 +45,12 @@ let timerInterval;
 startBtn.addEventListener("click", startQuiz);
 
 // Define startQuiz function
-
+function startQuiz() {
+    startBtn.style.display = "none";
+    quizContainer.style.display = "block";
+    showQuestion();
+    timerInterval = setInterval(updateTimer, 1000);
+}
 
 // Define showQuestion function
 
