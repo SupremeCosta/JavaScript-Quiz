@@ -53,7 +53,16 @@ function startQuiz() {
 }
 
 // Define showQuestion function
-
+function showQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    questionEl.textContent = currentQuestion.question;
+    currentQuestion.choices.forEach((choice, index) => {
+      const choiceBtn = choicesEl.children[index].firstElementChild;
+      choiceBtn.textContent = choice;
+      choiceBtn.removeEventListener("click", handleChoice);
+      choiceBtn.addEventListener("click", handleChoice);
+    });
+}
 
 // Define handleChoice function
 
