@@ -42,7 +42,7 @@ let score = 0;
 let timerInterval;
 
 // Add event listener to start button
-
+startBtn.addEventListener("click", startQuiz);
 
 // Define startQuiz function
 
