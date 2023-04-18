@@ -104,6 +104,9 @@ function endQuiz() {
 }
 
 // Add event listener to submit button
-
+submitBtn.addEventListener("click", saveHighScore);
 
 // Define saveHighScore function
+function saveHighScore(event) {
+    event.preventDefault();
+}
