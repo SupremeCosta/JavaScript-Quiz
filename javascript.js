@@ -65,7 +65,25 @@ function showQuestion() {
 }
 
 // Define handleChoice function
-
+function handleChoice(event) {
+    const selectedAnswer = event.target.textContent;
+    const currentQuestion = questions[currentQuestionIndex];
+    if (selectedAnswer === currentQuestion.answer) {
+      score += 10;
+    } else {
+      time -= 10;
+      if (time < 0) {
+        time = 0;
+      }
+      timeEl.textContent = time;
+    }
+    currentQuestionIndex++;
+    if (currentQuestionIndex >= questions.length) {
+      endQuiz();
+    } else {
+      showQuestion();
+    }
+}
 
 // Define updateTimer function
 
