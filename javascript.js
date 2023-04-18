@@ -96,7 +96,12 @@ function updateTimer() {
 }
 
 // Define endQuiz function
-
+function endQuiz() {
+    clearInterval(timerInterval);
+    quizContainer.style.display = "none";
+    endContainer.style.display = "block";
+    scoreEl.textContent = score;
+}
 
 // Add event listener to submit button
 
