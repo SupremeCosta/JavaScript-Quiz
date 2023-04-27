@@ -1,79 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>JavaScript Quiz</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <h1>JavaScript Quiz</h1>
-        <p>Test your knowledge of JavaScript fundamentals!</p>
-        <button 
-            id="start-btn">Start Quiz
-        </button>
-        <div id="quiz-container" style="display: none;">
-            <h2 id="question"></h2>
-            <ul id="choices">
-                <li>
-                    <button 
-                        class="choice-btn">
-                    </button>
-                </li>
-                <li>
-                    <button 
-                        class="choice-btn">
-                    </button>
-                </li>
-                <li>
-                    <button 
-                        class="choice-btn">
-                    </button>
-                </li>
-                <li>
-                    <button 
-                        class="choice-btn">
-                    </button>
-                </li>
-            </ul>
-            <div id="time-container"> 
-                    <span 
-                        id="time-label">Time:
-                    </span>
-                    <span 
-                        id="time-value">60
-                    </span>
-            </div>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Code Quiz</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Code Quiz</h1>
+    </header>
+    <div id="container">
+      <div id="start-screen">
+        <h2>Welcome to the Code Quiz!</h2>
+        <button id="start-btn">Start Quiz</button>
+      </div>
+      <div id="quiz-screen" class="hidden">
+        <p id="timer">Time: <span id="time-left"></span></p>
+        <div id="question"></div>
+        <div id="choices"></div>
+      </div>
+      <div id="game-over-screen" class="hidden">
+        <h2>Game Over!</h2>
+        <p>Your final score is: <span id="final-score"></span></p>
+        <form>
+          <label for="initials">Enter initials:</label>
+          <input type="text" id="initials" />
+          <button type="submit" id="submit-score-btn">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div id="container">
+        <div id="start-screen">
         </div>
-        <div id="end-container" style="display: none;">
-            <h2>All done!</h2>
-            <p>
-                Your final score is 
-                    <span 
-                        id="score">
-                    </span>.
-            </p>
-            <form>
-                <label 
-                    for="initials">Enter initials:
-                </label>
-                <input type="text" id="initials" />
-                <button 
-                    id="submit-btn">Submit
-                </button>
-            </form>
+        <div id="quiz-screen" class="hidden">
         </div>
-        <div id="high-scores-container" style="display: none;">
-            <h2>High Scores</h2>
-            <ol 
-                id="high-scores-list">
-            </ol>
-            <button 
-                id="back-btn">Go Back
-            </button>
-            <button 
-                id="clear-btn">Clear High Scores
-            </button>
+        <div id="game-over-screen" class="hidden">
         </div>
-        <script src="javascript.js"></script>
-    </body>
+        <div id="highscores-screen" class="hidden">
+          <h2>High Scores</h2>
+          <button onclick="location.href='index.html';">Retake Quiz</button>
+          <button id="clear-highscores-btn">Clear Highscores</button>
+          <ul id="highscores-list"></ul>
+        </div>
+        <button id="view-highscores-btn">View High Scores</button>
+      </div>
+    <script src="javascript.js"></script>
+  </body>
 </html>

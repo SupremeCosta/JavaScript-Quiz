@@ -1,112 +1,170 @@
-// Define quiz questions and answers
-const questions = [
-    {
-      question: "What is the capital of France?",
-      choices: ["Paris", "Berlin", "London", "Madrid"],
-      answer: "Paris"
-    },
-    {
-      question: "What is the largest planet in our solar system?",
-      choices: ["Mars", "Jupiter", "Saturn", "Neptune"],
-      answer: "Jupiter"
-    },
-    {
-      question: "What is the powerhouse of the cell?",
-      choices: ["Nucleus", "Mitochondria", "Ribosome", "Endoplasmic reticulum"],
-      answer: "Mitochondria"
-    },
-    {
-      question: "What does HTML stand for?",
-      choices: ["Hyper Text Markup Language", "Home Tool Markup Language", "Hyperlinks and Text Markup Language", "Hyper Tool Markup Language"],
-      answer: "Hyper Text Markup Language"
-    }
+const quiz = [
+  {
+    question: "What does HTML stand for?",
+    choices: [
+      "Hyper Text Markup Language",
+      "Hyperlinks and Text Markup Language",
+      "Home Tool Markup Language",
+    ],
+    answer: "Hyper Text Markup Language",
+  },
+  {
+    question: "What does CSS stand for?",
+    choices: [
+      "Creative Style Sheets",
+      "Cascading Style Sheets",
+      "Computer Style Sheets",
+    ],
+    answer: "Cascading Style Sheets",
+  },
+  {
+    question: "What does JS stand for?",
+    choices: [
+      "JavaScript",
+      "JavaServer",
+      "JavaSource",
+    ],
+    answer: "JavaScript",
+  },
 ];
 
-// Set up variables and DOM elements
 const startBtn = document.getElementById("start-btn");
-const quizContainer = document.getElementById("quiz-container");
+const quizScreen = document.getElementById("quiz-screen");
+const startScreen = document.getElementById("start-screen");
+const gameOverScreen = document.getElementById("game-over-screen");
 const questionEl = document.getElementById("question");
 const choicesEl = document.getElementById("choices");
-const timeEl = document.getElementById("time");
-const endContainer = document.getElementById("end-container");
-const scoreEl = document.getElementById("score");
+const timeLeftEl = document.getElementById("time-left");
+const finalScoreEl = document.getElementById("final-score");
 const initialsInput = document.getElementById("initials");
-const submitBtn = document.getElementById("submit-btn");
-const highScoresContainer = document.getElementById("high-scores-container");
-const highScoresList = document.getElementById("high-scores-list");
-const backBtn = document.getElementById("back-btn");
-const clearBtn = document.getElementById("clear-btn");
-let currentQuestionIndex = 0;
-let time = 60;
-let score = 0;
+const submitScoreBtn = document.getElementById("submit-score-btn");
+const highscoresScreen = document.getElementById("highscores-screen");
+const highscoresList = document.getElementById("highscores-list");
+const viewHighScoresBtn = document.getElementById("view-highscores-btn");
+
+let currentQuestionIndex;
+let timeLeft;
 let timerInterval;
 
-// Add event listener to start button
-startBtn.addEventListener("click", startQuiz);
-
-// Define startQuiz function
 function startQuiz() {
-    startBtn.style.display = "none";
-    quizContainer.style.display = "block";
-    showQuestion();
-    timerInterval = setInterval(updateTimer, 1000);
+  currentQuestionIndex = 0;
+  timeLeft = 60;
+  startScreen.classList.add("hidden");
+  quizScreen.classList.remove("hidden");
+  showQuestion();
+  startTimer();
 }
 
-// Define showQuestion function
 function showQuestion() {
-    const currentQuestion = questions[currentQuestionIndex];
-    questionEl.textContent = currentQuestion.question;
-    currentQuestion.choices.forEach((choice, index) => {
-      const choiceBtn = choicesEl.children[index].firstElementChild;
-      choiceBtn.textContent = choice;
-      choiceBtn.removeEventListener("click", handleChoice);
-      choiceBtn.addEventListener("click", handleChoice);
-    });
-}
-
-// Define handleChoice function
-function handleChoice(event) {
-    const selectedAnswer = event.target.textContent;
-    const currentQuestion = questions[currentQuestionIndex];
-    if (selectedAnswer === currentQuestion.answer) {
-      score += 10;
-    } else {
-      time -= 10;
-      if (time < 0) {
-        time = 0;
+  const question = quiz[currentQuestionIndex];
+  questionEl.textContent = question.question;
+  choicesEl.innerHTML = "";
+  question.choices.forEach((choice) => {
+    const button = document.createElement("button");
+    button.textContent = choice;
+    button.classList.add("choice");
+    button.addEventListener("click", () => {
+      if (choice === question.answer) {
+        showFeedback("Correct!");
+      } else {
+        showFeedback("Wrong!");
+        timeLeft -= 10;
+        if (timeLeft < 0) {
+          timeLeft = 0;
+        }
+        timeLeftEl.textContent = timeLeft;
       }
-      timeEl.textContent = time;
+    });
+    choicesEl.appendChild(button);
+  });
+}
+  
+  function showFeedback(feedback) {
+  const feedbackEl = document.createElement("p");
+  feedbackEl.textContent = feedback;
+  quizScreen.appendChild(feedbackEl);
+  setTimeout(() => {
+  feedbackEl.remove();
+  currentQuestionIndex++;
+  if (currentQuestionIndex === quiz.length) {
+  endQuiz();
+  } else {
+  showQuestion();
+  }
+  }, 1000);
+  }
+  
+  function startTimer() {
+  timeLeftEl.textContent = timeLeft;
+  timerInterval = setInterval(() => {
+  timeLeft--;
+  timeLeftEl.textContent = timeLeft;
+  if (timeLeft === 0) {
+  endQuiz();
+  }
+  }, 1000);
+  }
+  
+  function endQuiz() {
+  clearInterval(timerInterval);
+  quizScreen.classList.add("hidden");
+  gameOverScreen.classList.remove("hidden");
+  finalScoreEl.textContent = timeLeft;
+
+  const retakeQuizBtn = document.createElement("button");
+  retakeQuizBtn.textContent = "Retake Quiz";
+  gameOverScreen.appendChild(retakeQuizBtn);
+
+  retakeQuizBtn.addEventListener("click", () => {
+    gameOverScreen.classList.add("hidden");
+    startScreen.classList.remove("hidden");
+  });
+  }
+
+  function showHighScores() {
+    highscoresList.innerHTML = "";
+    const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+    highScores.forEach(score => {
+      const li = document.createElement("li");
+      li.textContent = `${score.initials} - ${score.score}`;
+      highscoresList.appendChild(li);
+    });
+    startScreen.classList.add("hidden");
+    quizScreen.classList.add("hidden");
+    gameOverScreen.classList.add("hidden");
+    highscoresScreen.classList.remove("hidden");
+
+    const clearHighscoresBtn = document.getElementById("clear-highscores-btn");
+    clearHighscoresBtn.addEventListener("click", () => {
+      localStorage.removeItem("highScores");
+      highscoresList.innerHTML = "";
+    });
+  }
+  
+  submitScoreBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const initials = initialsInput.value.trim();
+    if (initials !== "") {
+      const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+      const newScore = { initials, score: timeLeft };
+      highScores.push(newScore);
+      highScores.sort((a, b) => b.score - a.score);
+      localStorage.setItem("highScores", JSON.stringify(highScores));
+  
+      // hide quiz content and show highscores list
+      quizScreen.classList.add("hidden");
+      gameOverScreen.classList.add("hidden");
+      highScoresScreen.classList.remove("hidden");
+  
+      // update highscores list
+      highScoresList.innerHTML = "";
+      highScores.forEach((score) => {
+        const li = document.createElement("li");
+        li.textContent = `${score.initials} - ${score.score}`;
+        highScoresList.appendChild(li);
+      });
     }
-    currentQuestionIndex++;
-    if (currentQuestionIndex >= questions.length) {
-      endQuiz();
-    } else {
-      showQuestion();
-    }
-}
+  });
 
-// Define updateTimer function
-function updateTimer() {
-    time--;
-    if (time < 0) {
-      time = 0;
-      endQuiz();
-    }
-    timeEl.textContent = time;
-}
-
-// Define endQuiz function
-function endQuiz() {
-    clearInterval(timerInterval);
-    quizContainer.style.display = "none";
-    endContainer.style.display = "block";
-    scoreEl.textContent = score;
-}
-
-// Add event listener to submit button
-submitBtn.addEventListener("click", saveHighScore);
-
-// Define saveHighScore function
-function saveHighScore(event) {
-    event.preventDefault();
-}
+startBtn.addEventListener("click", startQuiz);
+viewHighScoresBtn.addEventListener("click", showHighScores);
